@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/reasonings",
+      "handler": "reasoning.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/reasonings/count",
+      "handler": "reasoning.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/reasonings/:id",
+      "handler": "reasoning.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/reasonings",
+      "handler": "reasoning.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/reasonings/:id",
+      "handler": "reasoning.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/reasonings/:id",
+      "handler": "reasoning.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reasonings",
+  "info": {
+    "name": "Reasoning"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "premises": {
+      "via": "usedIn",
+      "collection": "argument",
+      "dominant": true
+    }
+  }
+}
