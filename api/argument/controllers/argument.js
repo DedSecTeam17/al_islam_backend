@@ -5,4 +5,10 @@
  * to customize this controller
  */
 
-module.exports = {};
+module.exports = {
+    find: ctx => {
+        return strapi.query('argument').find(ctx.query, [
+            'reasonings','reasonings.premises'
+        ]);
+      },
+};
