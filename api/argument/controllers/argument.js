@@ -6,9 +6,19 @@
  */
 
 module.exports = {
-    find: ctx => {
-        return strapi.query('argument').find(ctx.query, [
-            'reasonings','reasonings.premises'
-        ]);
+//    find: ctx => {
+//        return strapi.query('argument').find(ctx.query, [
+//            'reasonings','reasonings.premises'
+//        ]);
+//      },
+find: ctx => {
+    return strapi.query('argument').find(ctx.query, [
+      {
+        path: 'reasonings',
+        populate: {
+          path: 'premises',
+        },
       },
+    ]);
+  },
 };

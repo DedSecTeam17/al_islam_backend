@@ -26,6 +26,10 @@
     },
     "reasonings": {
       "collection": "reasoning"
+    },
+    "public": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
