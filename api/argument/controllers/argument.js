@@ -44,7 +44,13 @@ module.exports = {
     for (const reason of reasonings) {
       const { statement, ...pemises } = reason
 
-      const savedPremise = await strapi.query('Argument').create({ statement })
+      const t = {
+        statement: statement,
+        usedIn: [savedReason.id]
+      }
+
+      const savedPremise = await strapi.query('Argument').create(t)
+      console.log(savedPremise)
     }
 
     ctx.response.send({ saved: true })
