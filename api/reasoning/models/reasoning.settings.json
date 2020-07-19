@@ -10,9 +10,12 @@
   },
   "attributes": {
     "premises": {
-      "via": "usedIn",
       "collection": "argument",
+      "via": "usedIn",
       "dominant": true
+    },
+    "premise": {
+      "type": "json"
     }
   }
 }

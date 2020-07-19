@@ -21,8 +21,8 @@
       "model": "user"
     },
     "usedIn": {
-      "collection": "reasoning",
-      "via": "premises"
+      "via": "premises",
+      "collection": "reasoning"
     },
     "reasonings": {
       "collection": "reasoning"
