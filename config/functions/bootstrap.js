@@ -10,4 +10,12 @@
  * See more details here: https://strapi.io/documentation/v3.x/concepts/configurations.html#bootstrap
  */
 
-module.exports = () => {};
+module.exports = (cb) => {
+  const io = require('socket.io')( strapi.server)
+
+  io.on('connection', function (socket) {
+    console.log('connected')
+  })
+
+  strapi.io = io
+};
