@@ -39,21 +39,29 @@ module.exports = {
     }
 
     const savedArgument = await strapi.query('Argument').create(a)
-    await strapi.query('reasoning').update({ _id: savedReason.id }, { premises: [savedArgument.id]})
-
+    
+    const arr = []
     for (const reason of reasonings) {
       const { statement, ...pemises } = reason
-
+      
       const t = {
         statement: statement,
         usedIn: [savedReason.id]
       }
-
+      
       const savedPremise = await strapi.query('Argument').create(t)
-      console.log(savedPremise)
+      arr.push({
+        id: savedPremise.id,
+        order: premises.order
+      })
+      // console.log(savedPremise)
     }
 
-    ctx.response.send({ saved: true })
+    await strapi.query('reasoning').update({ _id: savedReason.id }, { premises: [savedArgument.id], premise: arr})
+    const lol = await strapi.query('Argument').find({id: savedArgument.id})
+    // console.log(lol)
+
+    ctx.response.send({ saved: lol })
   },
   
   update: async ctx => {
