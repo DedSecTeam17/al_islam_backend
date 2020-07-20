@@ -112,3 +112,4 @@ exports
 .cache
 build
 package-lock.json
+ngrok.exe
