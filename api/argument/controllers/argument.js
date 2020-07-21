@@ -68,6 +68,10 @@ module.exports = {
     const id = ctx.params
     const updateData = ctx.request.body
 
+    if(!updateData){
+      throw new Error()
+    }
+
     const updatedArgument = await strapi.query('Argument').update({ id }, updateData)
     //send to all connected users
     // strapi.emitToAllUsers(ctx.request.body)
