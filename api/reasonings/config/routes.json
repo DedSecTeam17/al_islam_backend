@@ -3,7 +3,7 @@
     {
       "method": "GET",
       "path": "/reasonings",
-      "handler": "reasoning.find",
+      "handler": "reasonings.find",
       "config": {
         "policies": []
       }
@@ -11,7 +11,7 @@
     {
       "method": "GET",
       "path": "/reasonings/count",
-      "handler": "reasoning.count",
+      "handler": "reasonings.count",
       "config": {
         "policies": []
       }
@@ -19,7 +19,7 @@
     {
       "method": "GET",
       "path": "/reasonings/:id",
-      "handler": "reasoning.findOne",
+      "handler": "reasonings.findOne",
       "config": {
         "policies": []
       }
@@ -27,7 +27,7 @@
     {
       "method": "POST",
       "path": "/reasonings",
-      "handler": "reasoning.create",
+      "handler": "reasonings.create",
       "config": {
         "policies": []
       }
@@ -35,7 +35,7 @@
     {
       "method": "PUT",
       "path": "/reasonings/:id",
-      "handler": "reasoning.update",
+      "handler": "reasonings.update",
       "config": {
         "policies": []
       }
@@ -43,7 +43,7 @@
     {
       "method": "DELETE",
       "path": "/reasonings/:id",
-      "handler": "reasoning.delete",
+      "handler": "reasonings.delete",
       "config": {
         "policies": []
       }

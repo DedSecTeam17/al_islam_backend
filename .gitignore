@@ -108,8 +108,7 @@ coverage
 ############################
 
 .env
-# exports
+license.txt
+exports
 .cache
 build
-package-lock.json
-ngrok.exe

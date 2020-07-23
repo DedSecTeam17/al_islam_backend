@@ -2,7 +2,7 @@
   "kind": "collectionType",
   "collectionName": "reasonings",
   "info": {
-    "name": "Reasoning"
+    "name": "Reasonings"
   },
   "options": {
     "increments": true,
@@ -10,11 +10,11 @@
   },
   "attributes": {
     "premises": {
-      "collection": "argument",
-      "via": "usedIn",
+      "collection": "arguments",
+      "via": "reasonings",
       "dominant": true
     },
-    "premise": {
+    "order": {
       "type": "json"
     }
   }

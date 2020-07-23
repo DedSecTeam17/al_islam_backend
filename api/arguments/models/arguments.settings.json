@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "arguments",
+  "info": {
+    "name": "Arguments"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "statement": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "reasonings": {
+      "via": "premises",
+      "collection": "reasonings"
+    }
+  }
+}

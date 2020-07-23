@@ -1,77 +1,80 @@
-type Argument {
+type AdminUser {
+  id: ID!
+  username: String
+}
+
+input ArgumentInput {
+  statement: String!
+  reasonings: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
+type Arguments {
   id: ID!
   _id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   statement: String!
-  role: UsersPermissionsUser
-  public: Boolean
-  usedIn(sort: String, limit: Int, start: Int, where: JSON): [Reasoning]
-  reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasoning]
+  created_by: AdminUser
+  updated_by: AdminUser
+  reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
 }
 
-type ArgumentAggregator {
+type ArgumentsAggregator {
   count: Int
   totalCount: Int
 }
 
-type ArgumentConnection {
-  values: [Argument]
-  groupBy: ArgumentGroupBy
-  aggregate: ArgumentAggregator
+type ArgumentsConnection {
+  values: [Arguments]
+  groupBy: ArgumentsGroupBy
+  aggregate: ArgumentsAggregator
 }
 
-type ArgumentConnection_id {
+type ArgumentsConnection_id {
   key: ID
-  connection: ArgumentConnection
+  connection: ArgumentsConnection
 }
 
-type ArgumentConnectionCreatedAt {
+type ArgumentsConnectionCreated_by {
+  key: ID
+  connection: ArgumentsConnection
+}
+
+type ArgumentsConnectionCreatedAt {
   key: DateTime
-  connection: ArgumentConnection
+  connection: ArgumentsConnection
 }
 
-type ArgumentConnectionId {
+type ArgumentsConnectionId {
   key: ID
-  connection: ArgumentConnection
+  connection: ArgumentsConnection
 }
 
-type ArgumentConnectionPublic {
-  key: Boolean
-  connection: ArgumentConnection
-}
-
-type ArgumentConnectionRole {
-  key: ID
-  connection: ArgumentConnection
-}
-
-type ArgumentConnectionStatement {
+type ArgumentsConnectionStatement {
   key: String
-  connection: ArgumentConnection
+  connection: ArgumentsConnection
 }
 
-type ArgumentConnectionUpdatedAt {
+type ArgumentsConnectionUpdated_by {
+  key: ID
+  connection: ArgumentsConnection
+}
+
+type ArgumentsConnectionUpdatedAt {
   key: DateTime
-  connection: ArgumentConnection
+  connection: ArgumentsConnection
 }
 
-type ArgumentGroupBy {
-  id: [ArgumentConnectionId]
-  _id: [ArgumentConnection_id]
-  createdAt: [ArgumentConnectionCreatedAt]
-  updatedAt: [ArgumentConnectionUpdatedAt]
-  statement: [ArgumentConnectionStatement]
-  role: [ArgumentConnectionRole]
-  public: [ArgumentConnectionPublic]
-}
-
-input ArgumentInput {
-  statement: String!
-  role: ID
-  usedIn: [ID]
-  reasonings: [ID]
-  public: Boolean
+type ArgumentsGroupBy {
+  id: [ArgumentsConnectionId]
+  _id: [ArgumentsConnection_id]
+  createdAt: [ArgumentsConnectionCreatedAt]
+  updatedAt: [ArgumentsConnectionUpdatedAt]
+  statement: [ArgumentsConnectionStatement]
+  created_by: [ArgumentsConnectionCreated_by]
+  updated_by: [ArgumentsConnectionUpdated_by]
 }
 
 input createArgumentInput {
@@ -79,7 +82,7 @@ input createArgumentInput {
 }
 
 type createArgumentPayload {
-  argument: Argument
+  argument: Arguments
 }
 
 input createReasoningInput {
@@ -87,7 +90,7 @@ input createReasoningInput {
 }
 
 type createReasoningPayload {
-  reasoning: Reasoning
+  reasoning: Reasonings
 }
 
 input createRoleInput {
@@ -125,7 +128,7 @@ input deleteArgumentInput {
 }
 
 type deleteArgumentPayload {
-  argument: Argument
+  argument: Arguments
 }
 
 input deleteReasoningInput {
@@ -133,7 +136,7 @@ input deleteReasoningInput {
 }
 
 type deleteReasoningPayload {
-  reasoning: Reasoning
+  reasoning: Reasonings
 }
 
 input deleteRoleInput {
@@ -154,10 +157,9 @@ type deleteUserPayload {
 
 input editArgumentInput {
   statement: String
-  role: ID
-  usedIn: [ID]
   reasonings: [ID]
-  public: Boolean
+  created_by: ID
+  updated_by: ID
 }
 
 input editFileInput {
@@ -176,11 +178,15 @@ input editFileInput {
   provider: String
   provider_metadata: JSON
   related: [ID]
+  created_by: ID
+  updated_by: ID
 }
 
 input editReasoningInput {
   premises: [ID]
-  premise: JSON
+  order: JSON
+  created_by: ID
+  updated_by: ID
 }
 
 input editRoleInput {
@@ -189,6 +195,8 @@ input editRoleInput {
   type: String
   permissions: [ID]
   users: [ID]
+  created_by: ID
+  updated_by: ID
 }
 
 input editUserInput {
@@ -200,6 +208,8 @@ input editUserInput {
   confirmed: Boolean
   blocked: Boolean
   role: ID
+  created_by: ID
+  updated_by: ID
 }
 
 input FileInput {
@@ -218,6 +228,8 @@ input FileInput {
   provider: String!
   provider_metadata: JSON
   related: [ID]
+  created_by: ID
+  updated_by: ID
 }
 
 input InputID {
@@ -232,7 +244,7 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Argument | ArgumentConnection | ArgumentAggregator | ArgumentGroupBy | ArgumentConnectionId | ArgumentConnection_id | ArgumentConnectionCreatedAt | ArgumentConnectionUpdatedAt | ArgumentConnectionStatement | ArgumentConnectionRole | ArgumentConnectionPublic | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Reasoning | ReasoningConnection | ReasoningAggregator | ReasoningGroupBy | ReasoningConnectionId | ReasoningConnection_id | ReasoningConnectionCreatedAt | ReasoningConnectionUpdatedAt | ReasoningConnectionPremise | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Arguments | ArgumentsConnection | ArgumentsAggregator | ArgumentsGroupBy | ArgumentsConnectionId | ArgumentsConnection_id | ArgumentsConnectionCreatedAt | ArgumentsConnectionUpdatedAt | ArgumentsConnectionStatement | ArgumentsConnectionCreated_by | ArgumentsConnectionUpdated_by | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Reasonings | ReasoningsConnection | ReasoningsAggregator | ReasoningsGroupBy | ReasoningsConnectionId | ReasoningsConnection_id | ReasoningsConnectionCreatedAt | ReasoningsConnectionUpdatedAt | ReasoningsConnectionOrder | ReasoningsConnectionCreated_by | ReasoningsConnectionUpdated_by | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionCreated_by | UploadFileConnectionUpdated_by | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionUpdated_by | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionUpdated_by | createUserPayload | updateUserPayload | deleteUserPayload
 
 type Mutation {
   createArgument(input: createArgumentInput): createArgumentPayload
@@ -259,7 +271,6 @@ type Mutation {
 
   """Delete an existing user"""
   deleteUser(input: deleteUserInput): deleteUserPayload
-  createArgumentt(statement: String, reasonings: [reasoningInput]): Argument
   upload(refId: ID, ref: String, field: String, source: String, file: Upload!): UploadFile!
   multipleUpload(refId: ID, ref: String, field: String, source: String, files: [Upload]!): [UploadFile]!
   login(input: UsersPermissionsLoginInput!): UsersPermissionsLoginPayload!
@@ -270,12 +281,12 @@ type Mutation {
 }
 
 type Query {
-  argument(id: ID!): Argument
-  arguments(sort: String, limit: Int, start: Int, where: JSON): [Argument]
-  argumentsConnection(sort: String, limit: Int, start: Int, where: JSON): ArgumentConnection
-  reasoning(id: ID!): Reasoning
-  reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasoning]
-  reasoningsConnection(sort: String, limit: Int, start: Int, where: JSON): ReasoningConnection
+  argument(id: ID!): Arguments
+  arguments(sort: String, limit: Int, start: Int, where: JSON): [Arguments]
+  argumentsConnection(sort: String, limit: Int, start: Int, where: JSON): ArgumentsConnection
+  reasoning(id: ID!): Reasonings
+  reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
+  reasoningsConnection(sort: String, limit: Int, start: Int, where: JSON): ReasoningsConnection
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
   role(id: ID!): UsersPermissionsRole
@@ -291,67 +302,78 @@ type Query {
   me: UsersPermissionsMe
 }
 
-type Reasoning {
+input ReasoningInput {
+  premises: [ID]
+  order: JSON
+  created_by: ID
+  updated_by: ID
+}
+
+type Reasonings {
   id: ID!
   _id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  premise: JSON
-  premises(sort: String, limit: Int, start: Int, where: JSON): [Argument]
+  order: JSON
+  created_by: AdminUser
+  updated_by: AdminUser
+  premises(sort: String, limit: Int, start: Int, where: JSON): [Arguments]
 }
 
-type ReasoningAggregator {
+type ReasoningsAggregator {
   count: Int
   totalCount: Int
 }
 
-type ReasoningConnection {
-  values: [Reasoning]
-  groupBy: ReasoningGroupBy
-  aggregate: ReasoningAggregator
+type ReasoningsConnection {
+  values: [Reasonings]
+  groupBy: ReasoningsGroupBy
+  aggregate: ReasoningsAggregator
 }
 
-type ReasoningConnection_id {
+type ReasoningsConnection_id {
   key: ID
-  connection: ReasoningConnection
+  connection: ReasoningsConnection
 }
 
-type ReasoningConnectionCreatedAt {
+type ReasoningsConnectionCreated_by {
+  key: ID
+  connection: ReasoningsConnection
+}
+
+type ReasoningsConnectionCreatedAt {
   key: DateTime
-  connection: ReasoningConnection
+  connection: ReasoningsConnection
 }
 
-type ReasoningConnectionId {
+type ReasoningsConnectionId {
   key: ID
-  connection: ReasoningConnection
+  connection: ReasoningsConnection
 }
 
-type ReasoningConnectionPremise {
+type ReasoningsConnectionOrder {
   key: JSON
-  connection: ReasoningConnection
+  connection: ReasoningsConnection
 }
 
-type ReasoningConnectionUpdatedAt {
+type ReasoningsConnectionUpdated_by {
+  key: ID
+  connection: ReasoningsConnection
+}
+
+type ReasoningsConnectionUpdatedAt {
   key: DateTime
-  connection: ReasoningConnection
+  connection: ReasoningsConnection
 }
 
-type ReasoningGroupBy {
-  id: [ReasoningConnectionId]
-  _id: [ReasoningConnection_id]
-  createdAt: [ReasoningConnectionCreatedAt]
-  updatedAt: [ReasoningConnectionUpdatedAt]
-  premise: [ReasoningConnectionPremise]
-}
-
-input reasoningInput {
-  statement: String!
-  order: Int
-}
-
-input ReasoningInput {
-  premises: [ID]
-  premise: JSON
+type ReasoningsGroupBy {
+  id: [ReasoningsConnectionId]
+  _id: [ReasoningsConnection_id]
+  createdAt: [ReasoningsConnectionCreatedAt]
+  updatedAt: [ReasoningsConnectionUpdatedAt]
+  order: [ReasoningsConnectionOrder]
+  created_by: [ReasoningsConnectionCreated_by]
+  updated_by: [ReasoningsConnectionUpdated_by]
 }
 
 input RoleInput {
@@ -360,6 +382,8 @@ input RoleInput {
   type: String
   permissions: [ID]
   users: [ID]
+  created_by: ID
+  updated_by: ID
 }
 
 """A time string with format: HH:mm:ss.SSS"""
@@ -371,7 +395,7 @@ input updateArgumentInput {
 }
 
 type updateArgumentPayload {
-  argument: Argument
+  argument: Arguments
 }
 
 input updateReasoningInput {
@@ -380,7 +404,7 @@ input updateReasoningInput {
 }
 
 type updateReasoningPayload {
-  reasoning: Reasoning
+  reasoning: Reasonings
 }
 
 input updateRoleInput {
@@ -423,6 +447,8 @@ type UploadFile {
   previewUrl: String
   provider: String!
   provider_metadata: JSON
+  created_by: AdminUser
+  updated_by: AdminUser
   related(sort: String, limit: Int, start: Int, where: JSON): [Morph]
 }
 
@@ -477,6 +503,11 @@ type UploadFileConnectionAlternativeText {
 
 type UploadFileConnectionCaption {
   key: String
+  connection: UploadFileConnection
+}
+
+type UploadFileConnectionCreated_by {
+  key: ID
   connection: UploadFileConnection
 }
 
@@ -540,6 +571,11 @@ type UploadFileConnectionSize {
   connection: UploadFileConnection
 }
 
+type UploadFileConnectionUpdated_by {
+  key: ID
+  connection: UploadFileConnection
+}
+
 type UploadFileConnectionUpdatedAt {
   key: DateTime
   connection: UploadFileConnection
@@ -574,6 +610,8 @@ type UploadFileGroupBy {
   previewUrl: [UploadFileConnectionPreviewUrl]
   provider: [UploadFileConnectionProvider]
   provider_metadata: [UploadFileConnectionProvider_metadata]
+  created_by: [UploadFileConnectionCreated_by]
+  updated_by: [UploadFileConnectionUpdated_by]
 }
 
 input UserInput {
@@ -585,6 +623,8 @@ input UserInput {
   confirmed: Boolean
   blocked: Boolean
   role: ID
+  created_by: ID
+  updated_by: ID
 }
 
 type UserPermissionsPasswordPayload {
@@ -598,7 +638,7 @@ input UsersPermissionsLoginInput {
 }
 
 type UsersPermissionsLoginPayload {
-  jwt: String!
+  jwt: String
   user: UsersPermissionsMe!
 }
 
@@ -629,6 +669,8 @@ type UsersPermissionsPermission {
   enabled: Boolean!
   policy: String
   role: UsersPermissionsRole
+  created_by: AdminUser
+  updated_by: AdminUser
 }
 
 input UsersPermissionsRegisterInput {
@@ -645,6 +687,8 @@ type UsersPermissionsRole {
   name: String!
   description: String
   type: String
+  created_by: AdminUser
+  updated_by: AdminUser
   permissions(sort: String, limit: Int, start: Int, where: JSON): [UsersPermissionsPermission]
   users(sort: String, limit: Int, start: Int, where: JSON): [UsersPermissionsUser]
 }
@@ -661,6 +705,11 @@ type UsersPermissionsRoleConnection {
 }
 
 type UsersPermissionsRoleConnection_id {
+  key: ID
+  connection: UsersPermissionsRoleConnection
+}
+
+type UsersPermissionsRoleConnectionCreated_by {
   key: ID
   connection: UsersPermissionsRoleConnection
 }
@@ -690,6 +739,11 @@ type UsersPermissionsRoleConnectionType {
   connection: UsersPermissionsRoleConnection
 }
 
+type UsersPermissionsRoleConnectionUpdated_by {
+  key: ID
+  connection: UsersPermissionsRoleConnection
+}
+
 type UsersPermissionsRoleConnectionUpdatedAt {
   key: DateTime
   connection: UsersPermissionsRoleConnection
@@ -703,6 +757,8 @@ type UsersPermissionsRoleGroupBy {
   name: [UsersPermissionsRoleConnectionName]
   description: [UsersPermissionsRoleConnectionDescription]
   type: [UsersPermissionsRoleConnectionType]
+  created_by: [UsersPermissionsRoleConnectionCreated_by]
+  updated_by: [UsersPermissionsRoleConnectionUpdated_by]
 }
 
 type UsersPermissionsUser {
@@ -716,6 +772,8 @@ type UsersPermissionsUser {
   confirmed: Boolean
   blocked: Boolean
   role: UsersPermissionsRole
+  created_by: AdminUser
+  updated_by: AdminUser
 }
 
 type UsersPermissionsUserAggregator {
@@ -744,6 +802,11 @@ type UsersPermissionsUserConnectionConfirmed {
   connection: UsersPermissionsUserConnection
 }
 
+type UsersPermissionsUserConnectionCreated_by {
+  key: ID
+  connection: UsersPermissionsUserConnection
+}
+
 type UsersPermissionsUserConnectionCreatedAt {
   key: DateTime
   connection: UsersPermissionsUserConnection
@@ -769,6 +832,11 @@ type UsersPermissionsUserConnectionRole {
   connection: UsersPermissionsUserConnection
 }
 
+type UsersPermissionsUserConnectionUpdated_by {
+  key: ID
+  connection: UsersPermissionsUserConnection
+}
+
 type UsersPermissionsUserConnectionUpdatedAt {
   key: DateTime
   connection: UsersPermissionsUserConnection
@@ -790,4 +858,6 @@ type UsersPermissionsUserGroupBy {
   confirmed: [UsersPermissionsUserConnectionConfirmed]
   blocked: [UsersPermissionsUserConnectionBlocked]
   role: [UsersPermissionsUserConnectionRole]
+  created_by: [UsersPermissionsUserConnectionCreated_by]
+  updated_by: [UsersPermissionsUserConnectionUpdated_by]
 }
