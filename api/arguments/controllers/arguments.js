@@ -11,26 +11,30 @@ module.exports = {
   //            'reasonings','reasonings.premises'
   //        ]);
   //      },
-  find: ctx => {
-    return strapi.query('Arguments').find(ctx.query, [
+  find: async ctx => {
+    const foundArgument =  await strapi.query('arguments').find({}, [
       {
-        path: 'reasonings',
+        path: 'reasoning',
         populate: {
           path: 'premises'
         }
       }
     ])
+
+    ctx.response.send(foundArgument)
   },
 
-  findOne: ctx => {
-    return strapi.query('Arguments').findOne(ctx.query, [
+  findOne: async ctx => {
+    const foundArgument = await strapi.query('Arguments').findOne(ctx.query, [
       {
-        path: 'reasonings',
+        path: 'reasoning',
         populate: {
           path: 'premises'
         }
       }
     ])
+
+    ctx.response.send(foundArgument)
   },
 
   create: async ctx => {

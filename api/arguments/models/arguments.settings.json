@@ -23,8 +23,11 @@
       "default": false
     },
     "UsedIn": {
-      "via": "premises",
-      "collection": "reasonings"
+      "collection": "reasonings",
+      "via": "premises"
+    },
+    "reasoning": {
+      "model": "reasonings"
     }
   }
 }

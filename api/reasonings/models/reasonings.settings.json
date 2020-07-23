@@ -10,8 +10,8 @@
   },
   "attributes": {
     "premises": {
-      "collection": "arguments",
       "via": "UsedIn",
+      "collection": "arguments",
       "dominant": true
     },
     "order": {
