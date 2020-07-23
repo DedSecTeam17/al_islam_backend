@@ -22,6 +22,17 @@ module.exports = {
     ])
   },
 
+  findOne: ctx => {
+    return strapi.query('Arguments').findOne(ctx.query, [
+      {
+        path: 'reasonings',
+        populate: {
+          path: 'premises'
+        }
+      }
+    ])
+  },
+
   create: async ctx => {
     const { reasonings, statement, ...argument } = ctx.request.body
     console.log({ reasonings, argument })
