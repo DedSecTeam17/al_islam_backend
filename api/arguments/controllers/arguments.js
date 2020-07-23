@@ -27,11 +27,7 @@ module.exports = {
     console.log({ reasonings, argument })
 
     
-    const savedReason = await strapi
-    .query('Reasonings').create()
-    // .create({
-    //   premise: { argument: savedArgument.id, reasoning: reasonings }
-    // })
+    const savedReason = await strapi.query('Reasonings').create()
 
     const a = {
       ...argument,
@@ -58,7 +54,7 @@ module.exports = {
       console.log({savedPremise})
     }
 
-    await strapi.query('reasonings').update({ _id: savedReason.id }, { premises: [savedArgument.id], premise: arr})
+    await strapi.query('reasonings').update({ _id: savedReason.id }, { premises: [savedArgument.id], order: arr})
     const lol = await strapi.query('Arguments').find({id: savedArgument.id})
     // console.log(lol)
 
