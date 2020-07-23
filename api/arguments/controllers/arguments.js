@@ -12,7 +12,7 @@ module.exports = {
   //        ]);
   //      },
   find: ctx => {
-    return strapi.query('argument').find(ctx.query, [
+    return strapi.query('Arguments').find(ctx.query, [
       {
         path: 'reasonings',
         populate: {
