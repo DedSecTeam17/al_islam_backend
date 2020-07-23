@@ -48,14 +48,15 @@ module.exports = {
     
     const savedReason = await strapi.query('Reasonings').create()
 
-    if (reasonings){
+    if (reasonings && reasonings !== []){
       const a = {
         statement,
         reasonings: [savedReason.id]
       }
     } else {
       const a = {
-        statement
+        statement,
+        reasonings: []
       }
     }
 
