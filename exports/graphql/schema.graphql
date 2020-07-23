@@ -271,6 +271,7 @@ type Mutation {
 
   """Delete an existing user"""
   deleteUser(input: deleteUserInput): deleteUserPayload
+  createArgumentt(statement: String, reasonings: [reasoningInput]): Arguments
   upload(refId: ID, ref: String, field: String, source: String, file: Upload!): UploadFile!
   multipleUpload(refId: ID, ref: String, field: String, source: String, files: [Upload]!): [UploadFile]!
   login(input: UsersPermissionsLoginInput!): UsersPermissionsLoginPayload!
@@ -300,6 +301,11 @@ type Query {
   users(sort: String, limit: Int, start: Int, where: JSON): [UsersPermissionsUser]
   usersConnection(sort: String, limit: Int, start: Int, where: JSON): UsersPermissionsUserConnection
   me: UsersPermissionsMe
+}
+
+input reasoningInput {
+  statement: String!
+  order: Int
 }
 
 input ReasoningInput {

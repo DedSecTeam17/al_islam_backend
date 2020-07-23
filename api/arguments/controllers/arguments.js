@@ -28,7 +28,7 @@ module.exports = {
 
     
     const savedReason = await strapi
-    .query('Reasoning').create()
+    .query('Reasonings').create()
     // .create({
     //   premise: { argument: savedArgument.id, reasoning: reasonings }
     // })
@@ -38,7 +38,7 @@ module.exports = {
       reasonings: [savedReason.id]
     }
 
-    const savedArgument = await strapi.query('Argument').create(a)
+    const savedArgument = await strapi.query('Arguments').create(a)
     
     const arr = []
     for (const reason of reasonings) {
@@ -50,7 +50,7 @@ module.exports = {
         usedIn: [savedReason.id]
       }
       
-      const savedPremise = await strapi.query('Argument').create(t)
+      const savedPremise = await strapi.query('Arguments').create(t)
       arr.push({
         id: savedPremise.id,
         order: order
@@ -58,8 +58,8 @@ module.exports = {
       console.log({savedPremise})
     }
 
-    await strapi.query('reasoning').update({ _id: savedReason.id }, { premises: [savedArgument.id], premise: arr})
-    const lol = await strapi.query('Argument').find({id: savedArgument.id})
+    await strapi.query('reasonings').update({ _id: savedReason.id }, { premises: [savedArgument.id], premise: arr})
+    const lol = await strapi.query('Arguments').find({id: savedArgument.id})
     // console.log(lol)
 
     ctx.response.send(lol)
