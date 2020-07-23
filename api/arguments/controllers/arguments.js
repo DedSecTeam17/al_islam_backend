@@ -23,15 +23,25 @@ module.exports = {
   },
 
   create: async ctx => {
-    const { reasonings, ...argument } = ctx.request.body
+    const { reasonings, statement, ...argument } = ctx.request.body
     console.log({ reasonings, argument })
+
+    if (!statement){
+      throw new Error('should contain statement')
+    }
 
     
     const savedReason = await strapi.query('Reasonings').create()
 
-    const a = {
-      ...argument,
-      reasonings: [savedReason.id]
+    if (reasonings){
+      const a = {
+        statement,
+        reasonings: [savedReason.id]
+      }
+    } else {
+      const a = {
+        statement
+      }
     }
 
     const savedArgument = await strapi.query('Arguments').create(a)
@@ -56,7 +66,6 @@ module.exports = {
 
     await strapi.query('reasonings').update({ _id: savedReason.id }, { premises: [savedArgument.id], order: arr})
     const lol = await strapi.query('Arguments').find({id: savedArgument.id})
-    // console.log(lol)
 
     ctx.response.send(lol)
   },

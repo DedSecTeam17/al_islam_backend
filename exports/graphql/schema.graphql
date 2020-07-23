@@ -5,7 +5,9 @@ type AdminUser {
 
 input ArgumentInput {
   statement: String!
-  reasonings: [ID]
+  role: ID
+  public: Boolean
+  UsedIn: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -16,9 +18,11 @@ type Arguments {
   createdAt: DateTime!
   updatedAt: DateTime!
   statement: String!
+  role: UsersPermissionsUser
+  public: Boolean
   created_by: AdminUser
   updated_by: AdminUser
-  reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
+  UsedIn(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
 }
 
 type ArgumentsAggregator {
@@ -52,6 +56,16 @@ type ArgumentsConnectionId {
   connection: ArgumentsConnection
 }
 
+type ArgumentsConnectionPublic {
+  key: Boolean
+  connection: ArgumentsConnection
+}
+
+type ArgumentsConnectionRole {
+  key: ID
+  connection: ArgumentsConnection
+}
+
 type ArgumentsConnectionStatement {
   key: String
   connection: ArgumentsConnection
@@ -73,6 +87,8 @@ type ArgumentsGroupBy {
   createdAt: [ArgumentsConnectionCreatedAt]
   updatedAt: [ArgumentsConnectionUpdatedAt]
   statement: [ArgumentsConnectionStatement]
+  role: [ArgumentsConnectionRole]
+  public: [ArgumentsConnectionPublic]
   created_by: [ArgumentsConnectionCreated_by]
   updated_by: [ArgumentsConnectionUpdated_by]
 }
@@ -157,7 +173,9 @@ type deleteUserPayload {
 
 input editArgumentInput {
   statement: String
-  reasonings: [ID]
+  role: ID
+  public: Boolean
+  UsedIn: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -244,7 +262,7 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Arguments | ArgumentsConnection | ArgumentsAggregator | ArgumentsGroupBy | ArgumentsConnectionId | ArgumentsConnection_id | ArgumentsConnectionCreatedAt | ArgumentsConnectionUpdatedAt | ArgumentsConnectionStatement | ArgumentsConnectionCreated_by | ArgumentsConnectionUpdated_by | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Reasonings | ReasoningsConnection | ReasoningsAggregator | ReasoningsGroupBy | ReasoningsConnectionId | ReasoningsConnection_id | ReasoningsConnectionCreatedAt | ReasoningsConnectionUpdatedAt | ReasoningsConnectionOrder | ReasoningsConnectionCreated_by | ReasoningsConnectionUpdated_by | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionCreated_by | UploadFileConnectionUpdated_by | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionUpdated_by | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionUpdated_by | createUserPayload | updateUserPayload | deleteUserPayload
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Arguments | ArgumentsConnection | ArgumentsAggregator | ArgumentsGroupBy | ArgumentsConnectionId | ArgumentsConnection_id | ArgumentsConnectionCreatedAt | ArgumentsConnectionUpdatedAt | ArgumentsConnectionStatement | ArgumentsConnectionRole | ArgumentsConnectionPublic | ArgumentsConnectionCreated_by | ArgumentsConnectionUpdated_by | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Reasonings | ReasoningsConnection | ReasoningsAggregator | ReasoningsGroupBy | ReasoningsConnectionId | ReasoningsConnection_id | ReasoningsConnectionCreatedAt | ReasoningsConnectionUpdatedAt | ReasoningsConnectionOrder | ReasoningsConnectionCreated_by | ReasoningsConnectionUpdated_by | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionCreated_by | UploadFileConnectionUpdated_by | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionUpdated_by | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionUpdated_by | createUserPayload | updateUserPayload | deleteUserPayload
 
 type Mutation {
   createArgument(input: createArgumentInput): createArgumentPayload

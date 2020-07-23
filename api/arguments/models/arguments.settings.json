@@ -14,7 +14,15 @@
       "required": true,
       "unique": true
     },
-    "reasonings": {
+    "role": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "public": {
+      "type": "boolean",
+      "default": false
+    },
+    "UsedIn": {
       "via": "premises",
       "collection": "reasonings"
     }
