@@ -98,7 +98,7 @@ module.exports = {
       throw new Error()
     }
 
-    const updatedArgument = await strapi.query('Arguments').update({ id }, updateData)
+    const updatedArgument = await strapi.query('Arguments').update(id, updateData)
     //send to all connected users
     // strapi.emitToAllUsers(ctx.request.body)
   }
