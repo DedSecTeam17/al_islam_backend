@@ -27,7 +27,7 @@ module.exports = {
   findOne: async ctx => {
     const foundArgument = await strapi.query('Arguments').findOne({id: ctx.params.id}, [
       {
-        path: 'reasoning',
+        path: 'reasonings',
         populate: {
           path: 'premises'
         }
@@ -98,7 +98,7 @@ module.exports = {
       throw new Error()
     }
 
-    const updatedArgument = await strapi.query('Argument').update({ id }, updateData)
+    const updatedArgument = await strapi.query('Arguments').update({ id }, updateData)
     //send to all connected users
     // strapi.emitToAllUsers(ctx.request.body)
   }
