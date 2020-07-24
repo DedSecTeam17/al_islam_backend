@@ -21,11 +21,11 @@ module.exports = {
       }
     ])
 
-    ctx.response.send(foundArgument)
+    return foundArgument
   },
 
   findOne: async ctx => {
-    const foundArgument = await strapi.query('Arguments').findOne(ctx.query, [
+    const foundArgument = await strapi.query('Arguments').findOne({id: ctx.params.id}, [
       {
         path: 'reasoning',
         populate: {
@@ -34,7 +34,7 @@ module.exports = {
       }
     ])
 
-    ctx.response.send(foundArgument)
+    return foundArgument
   },
 
   create: async ctx => {
@@ -47,32 +47,35 @@ module.exports = {
 
     
     const savedReason = await strapi.query('Reasonings').create()
+    
+    let a;
 
-    if (reasonings && reasonings !== []){
-      const a = {
+    if (reasonings && reasonings.length > 0){
+      a = {
         statement,
-        reasonings: [savedReason.id]
+        reasoning: [savedReason.id]
       }
     } else {
-      const a = {
+      a = {
         statement,
-        reasonings: []
+        reasoning: []
       }
     }
+    console.log(a)
 
     const savedArgument = await strapi.query('Arguments').create(a)
+    console.log({savedArgument})
     
     const arr = []
     for (const reason of reasonings) {
-      console.log({reason})
       const { statement, order } = reason
       
-      const t = {
+      const obj = {
         statement: statement,
-        usedIn: [savedReason.id]
+        UsedIn: [savedReason.id]
       }
       
-      const savedPremise = await strapi.query('Arguments').create(t)
+      const savedPremise = await strapi.query('Arguments').create(obj)
       arr.push({
         id: savedPremise.id,
         order: order
@@ -80,10 +83,11 @@ module.exports = {
       console.log({savedPremise})
     }
 
-    await strapi.query('reasonings').update({ _id: savedReason.id }, { premises: [savedArgument.id], order: arr})
-    const lol = await strapi.query('Arguments').find({id: savedArgument.id})
+    const t = await strapi.query('reasonings').update({ _id: savedReason.id }, {order: arr})
+    console.log(t)
+    // const lol = await strapi.query('Arguments').find({id: savedArgument.id})
 
-    ctx.response.send(lol)
+    return savedArgument
   },
   
   update: async ctx => {
