@@ -14,7 +14,7 @@ module.exports = {
   find: async ctx => {
     const foundArgument =  await strapi.query('arguments').find({}, [
       {
-        path: 'reasoning',
+        path: 'reasonings',
         populate: {
           path: 'premises'
         }
@@ -53,12 +53,12 @@ module.exports = {
     if (reasonings && reasonings.length > 0){
       a = {
         statement,
-        reasoning: [savedReason.id]
+        reasonings: [savedReason.id]
       }
     } else {
       a = {
         statement,
-        reasoning: []
+        reasonings: []
       }
     }
     console.log(a)
