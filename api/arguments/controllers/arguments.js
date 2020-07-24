@@ -85,6 +85,7 @@ module.exports = {
 
     const t = await strapi.query('reasonings').update({ _id: savedReason.id }, {order: arr})
     console.log(t)
+    strapi.services.algolia.saveObject(savedArgument, 'argument');
     // const lol = await strapi.query('Arguments').find({id: savedArgument.id})
 
     return savedArgument
