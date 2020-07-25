@@ -100,6 +100,9 @@ module.exports = {
     }
 
     const updatedArgument = await strapi.query('Arguments').update(id, updateData)
+    strapi.services.algolia.saveObject(updatedArgument, 'Arguments');
+
+    return updatedArgument
     //send to all connected users
     // strapi.emitToAllUsers(ctx.request.body)
   }
