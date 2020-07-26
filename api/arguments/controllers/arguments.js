@@ -92,18 +92,29 @@ module.exports = {
   },
   
   update: async ctx => {
-    const id = ctx.params
+    const id = ctx.params.id
     const updateData = ctx.request.body
 
     if(!updateData){
       throw new Error()
     }
-
+    
     const updatedArgument = await strapi.query('Arguments').update(id, updateData)
-    strapi.services.algolia.saveObject(updatedArgument, 'Arguments');
+    // const { reasonings, reorder} = ctx.request.body
+    // if (reasonings && reorder) {
+    //   const updatedOrder = await strapi.qurey('reasonings').update({id: reason.id}, {reorder})
+    // }
+    strapi.services.algolia.saveObject(updatedArgument, 'argument');
 
     return updatedArgument
     //send to all connected users
     // strapi.emitToAllUsers(ctx.request.body)
+  },
+
+  delete: async ctx => {
+    const id = ctx.params.id
+    const deletedArgument = await strapi.query('Arguments').delete({ id })
+
+    strapi.services.algolia.deleteObject(id, 'argument')
   }
 };
