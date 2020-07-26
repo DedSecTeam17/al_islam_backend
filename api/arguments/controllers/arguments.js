@@ -99,7 +99,7 @@ module.exports = {
       throw new Error()
     }
     
-    const updatedArgument = await strapi.query('Arguments').update(id, updateData)
+    const updatedArgument = await strapi.query('Arguments').update({ id }, updateData)
     // const { reasonings, reorder} = ctx.request.body
     // if (reasonings && reorder) {
     //   const updatedOrder = await strapi.qurey('reasonings').update({id: reason.id}, {reorder})
