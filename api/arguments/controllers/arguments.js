@@ -33,6 +33,7 @@ module.exports = {
         }
       }
     ])
+    console.log(foundArgument)
 
     return foundArgument
   },
@@ -41,12 +42,19 @@ module.exports = {
     const { reasonings, statement, ...argument } = ctx.request.body
     console.log({ reasonings, argument })
 
+    
     if (!statement){
       throw new Error('should contain statement')
     }
-
     
-    const savedReason = await strapi.query('Reasonings').create()
+    // if reasoning is null or 
+    let savedReason;
+    if (argument.hasOwnProperty('reasoning')){
+      savedReason = await strapi.query('Reasonings').findOne({ id: argument.reasoning})
+    } else {
+      savedReason = await strapi.query('Reasonings').create()
+    }
+    
     
     let a;
 
@@ -68,23 +76,41 @@ module.exports = {
     
     const arr = []
     for (const reason of reasonings) {
-      const { statement, order } = reason
-      
-      const obj = {
-        statement: statement,
-        UsedIn: [savedReason.id]
+      const { statement, order, ...rest } = reason
+
+      // if id or complete premise
+      if (rest.hasOwnProperty('id')) {
+        const obj = {
+          UsedIn: [savedReason.id]
+        }
+        
+        const savedPremise = await strapi.query('Arguments').update( {id: rest.id} ,obj)
+
+        arr.push({
+          id: rest.id,
+          order: order
+        })
+
+      } else {
+        const obj = {
+          statement: statement,
+          UsedIn: [savedReason.id]
+        }
+        
+        const savedPremise = await strapi.query('Arguments').create(obj)
+        arr.push({
+          id: savedPremise.id,
+          order: order
+        })
+        console.log({savedPremise})
       }
       
-      const savedPremise = await strapi.query('Arguments').create(obj)
-      arr.push({
-        id: savedPremise.id,
-        order: order
-      })
-      console.log({savedPremise})
     }
 
-    const t = await strapi.query('reasonings').update({ _id: savedReason.id }, {order: arr})
-    console.log(t)
+    if (!argument.hasOwnProperty('reasoning')){
+      const t = await strapi.query('reasonings').update({ _id: savedReason.id }, {order: arr})
+      console.log(t)
+    }
     strapi.services.algolia.saveObject(savedArgument, 'argument');
     // const lol = await strapi.query('Arguments').find({id: savedArgument.id})
 
@@ -116,5 +142,25 @@ module.exports = {
     const deletedArgument = await strapi.query('Arguments').delete({ id })
 
     strapi.services.algolia.deleteObject(id, 'argument')
+  },
+
+  root: async ctx => {
+    // const foundArgument =  await strapi.query('arguments').find({ UsedIn: { $lte: []} } )
+    // const foundArgument = await strapi.query('arguments').find({ UsedIn: {$exists: true, $not: {$size: 0}}}, [
+    //   { path: 'UsedIn' }
+    // ])
+    const foundArgument = await strapi.query('arguments').find({}, [
+      { path: 'UsedIn' }
+    ])
+    const arr = []
+    for (const argument of foundArgument){
+      if (argument.UsedIn.length === 0){
+        arr.push(argument)
+      }
+    }
+    // const foundArgument =  await strapi.query('arguments').find({ UsedIn: [] })
+    console.log(arr)
+
+    return arr
   }
 };

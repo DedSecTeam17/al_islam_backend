@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/arguments/root",
+      "handler": "arguments.root",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/arguments/count",
       "handler": "arguments.count",
       "config": {
