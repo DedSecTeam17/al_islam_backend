@@ -111,7 +111,7 @@ module.exports = {
       const t = await strapi.query('reasonings').update({ _id: savedReason.id }, {order: arr})
       console.log(t)
     }
-    algoliaArgument = {
+    const algoliaArgument = {
       ...savedArgument,
       UsedInLength: savedArgument.UsedIn.length
     }
