@@ -188,6 +188,7 @@ module.exports = {
       }
       argument = await strapi.query('Arguments').create(obj)
     }
+    console.log({argument})
 
     // const obj = {
     //   ...premise,
@@ -196,6 +197,7 @@ module.exports = {
     // const argument = await strapi.query('Arguments').create(obj)
 
     const reason = await strapi.query('reasonings').findOne({ id: reasonId })
+    console.log({reason})
 
     reason.order.push({id: argument.id , order: order})
     
