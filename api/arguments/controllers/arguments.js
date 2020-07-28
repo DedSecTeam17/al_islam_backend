@@ -188,7 +188,6 @@ module.exports = {
       }
       argument = await strapi.query('Arguments').create(obj)
     }
-    console.log({argument})
 
     // const obj = {
     //   ...premise,
@@ -197,7 +196,6 @@ module.exports = {
     // const argument = await strapi.query('Arguments').create(obj)
 
     const reason = await strapi.query('reasonings').findOne({ id: reasonId })
-    console.log({reason})
 
     reason.order.push({id: argument.id , order: order})
     reason.premises.push(argument.id)
@@ -208,7 +206,32 @@ module.exports = {
   },
 
   addPremiseToArgument: async ctx => {
-    const reasonId = ctx.params.id
+    const argumentId = ctx.params.id
+    const { premise, order } = ctx.request.body
+
+    const savedReason = await strapi.query('Reasonings').create()
+
+    // originArgument = await strapi.query('Arguments').findOne({id: argumentId})
+    
+    let argument;
+    if (premise.hasOwnProperty('_id')){
+      argument = await strapi.query('Arguments').findOne({id: premise._id})
+    } else {
+      const obj = {
+        ...premise,
+        UsedIn: [savedReason.id]
+      }
+      argument = await strapi.query('Arguments').create(obj)
+    }
+    console.log({argument})
+    
+    originArgument = await strapi.query('Arguments').update({id: argumentId}, {reasonings: [savedReason.id]})
+
+    savedReason.order.push({id: argument.id , order: order})
+    savedReason.premises.push(argument.id)
+    const updatedReason = await strapi.query('Reasonings').update({ id: savedReason.id }, { order: savedReason.order, premises: savedReason.premises })
+
+    return updatedReason
   }
 };
 

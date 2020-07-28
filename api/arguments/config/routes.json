@@ -49,6 +49,14 @@
       }
     },
     {
+      "method": "POST",
+      "path": "/arguments/addPremiseToArgument/:id",
+      "handler": "arguments.addPremiseToArgument",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "PUT",
       "path": "/arguments/:id",
       "handler": "arguments.update",
