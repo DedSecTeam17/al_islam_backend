@@ -200,10 +200,15 @@ module.exports = {
     console.log({reason})
 
     reason.order.push({id: argument.id , order: order})
+    reason.premises.push(argument.id)
     
-    const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order})
+    const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order, premises: reason.premises})
 
     return updatedReason
+  },
+
+  addPremiseToArgument: async ctx => {
+    const reasonId = ctx.params.id
   }
 };
 
