@@ -177,11 +177,23 @@ module.exports = {
     const reasonId = ctx.params.id
     const { premise, order } = ctx.request.body
 
-    const obj = {
-      ...premise,
-      UsedIn: [reasonId]
+    let argument;
+    if (premise.hasOwnProperty('_id')){
+      argument = await strapi.query('Arguments').findOne({id: premise._id})
     }
-    const argument = await strapi.query('Arguments').create(obj)
+    else {
+      const obj = {
+        ...premise,
+        UsedIn: [reasonId]
+      }
+      argument = await strapi.query('Arguments').create(obj)
+    }
+
+    // const obj = {
+    //   ...premise,
+    //   UsedIn: [reasonId]
+    // }
+    // const argument = await strapi.query('Arguments').create(obj)
 
     const reason = await strapi.query('reasonings').findOne({ id: reasonId })
 
