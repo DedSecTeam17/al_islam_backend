@@ -207,7 +207,8 @@ module.exports = {
 
   addPremiseToArgument: async ctx => {
     const argumentId = ctx.params.id
-    const { premise, order } = ctx.request.body
+    const { premise } = ctx.request.body
+    console.log(ctx.request.body)
 
     const savedReason = await strapi.query('Reasonings').create({ order: []})
 
@@ -227,7 +228,7 @@ module.exports = {
     
     const originArgument = await strapi.query('Arguments').update({id: argumentId}, {reasonings: [savedReason.id]})
 
-    savedReason.order.push({id: argument.id , order: order})
+    savedReason.order.push({id: argument.id , order: 1})
     savedReason.premises.push(argument.id)
     const updatedReason = await strapi.query('Reasonings').update({ id: savedReason.id }, { order: savedReason.order, premises: savedReason.premises })
 
