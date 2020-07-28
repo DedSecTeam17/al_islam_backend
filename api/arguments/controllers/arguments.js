@@ -52,7 +52,7 @@ module.exports = {
     if (argument.hasOwnProperty('reasoning')){
       savedReason = await strapi.query('Reasonings').findOne({ id: argument.reasoning})
     } else {
-      savedReason = await strapi.query('Reasonings').create()
+      savedReason = await strapi.query('Reasonings').create({ order: []})
     }
     
     
@@ -209,7 +209,7 @@ module.exports = {
     const argumentId = ctx.params.id
     const { premise, order } = ctx.request.body
 
-    const savedReason = await strapi.query('Reasonings').create()
+    const savedReason = await strapi.query('Reasonings').create({ order: []})
 
     // originArgument = await strapi.query('Arguments').findOne({id: argumentId})
     
@@ -223,9 +223,9 @@ module.exports = {
       }
       argument = await strapi.query('Arguments').create(obj)
     }
-    console.log({argument})
+    console.log({savedReason})
     
-    originArgument = await strapi.query('Arguments').update({id: argumentId}, {reasonings: [savedReason.id]})
+    const originArgument = await strapi.query('Arguments').update({id: argumentId}, {reasonings: [savedReason.id]})
 
     savedReason.order.push({id: argument.id , order: order})
     savedReason.premises.push(argument.id)
