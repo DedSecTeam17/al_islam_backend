@@ -226,7 +226,9 @@ module.exports = {
     }
     console.log({savedReason})
     
-    const originArgument = await strapi.query('Arguments').update({id: argumentId}, {reasonings: [savedReason.id]})
+    const arg = await strapi.query('Arguments').findOne({id: argumentId})
+    arg.reasonings.push(savedReason)
+    const originArgument = await strapi.query('Arguments').update({id: argumentId}, {reasonings: arg.reasonings})
 
     savedReason.order.push({id: argument.id , order: 1})
     savedReason.premises.push(argument.id)
