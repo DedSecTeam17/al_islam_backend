@@ -41,6 +41,14 @@
       }
     },
     {
+      "method": "POST",
+      "path": "/arguments/addPremise/:id",
+      "handler": "arguments.addPremise",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "PUT",
       "path": "/arguments/:id",
       "handler": "arguments.update",

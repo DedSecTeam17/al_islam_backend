@@ -162,5 +162,29 @@ module.exports = {
     console.log(arr)
 
     return arr
+  },
+
+  addPremise: async ctx => {
+    const reasonId = ctx.params.id
+    const { premise, order } = ctx.request.body
+
+    const argument = await strapi.query('Arguments').create(premise)
+
+    const reason = await strapi.query('reasonings').findOne({ id: reasonId })
+
+    reason.order.push({id: argument.id , order: order})
+    
+    const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order})
+
+    return updatedReason
   }
 };
+
+// id: reasongig id
+
+// {
+//   premise: {
+//     statement: "lol"
+//   },
+//   order: 5
+// }
