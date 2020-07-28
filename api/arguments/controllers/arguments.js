@@ -154,7 +154,12 @@ module.exports = {
     //   { path: 'UsedIn' }
     // ])
     const foundArgument = await strapi.query('arguments').find({}, [
-      { path: 'UsedIn' }
+      { path: 'UsedIn' },
+      { path: 'reasonings',
+        populate: {
+          path: 'premises'
+        }
+      }
     ])
     const arr = []
     for (const argument of foundArgument){
