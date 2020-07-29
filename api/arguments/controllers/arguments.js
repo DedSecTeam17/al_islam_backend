@@ -200,7 +200,7 @@ module.exports = {
     reason.order.push({id: argument.id , order: order})
     reason.premises.push(argument.id)
     
-    const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order, premises: reason.premises})
+    const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order })
 
     return updatedReason
   },
