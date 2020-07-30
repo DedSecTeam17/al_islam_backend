@@ -210,7 +210,7 @@ module.exports = {
     
     const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order, premises: reason.premises})
 
-    let count;
+    let count = 0;
     for (const reaso of argument.reasonings){
       const angoliaSearch = await strapi.query('Arguments').find({ reasonings: reaso.id })
       count = angoliaSearch.length
@@ -257,7 +257,7 @@ module.exports = {
     savedReason.premises.push(argument.id)
     const updatedReason = await strapi.query('Reasonings').update({ id: savedReason.id }, { order: savedReason.order, premises: savedReason.premises })
 
-    let count;
+    let count = 0;
     for (const reaso of argument.reasonings){
       const angoliaSearch = await strapi.query('Arguments').find({ reasonings: reaso.id })
       count = angoliaSearch.length
