@@ -271,12 +271,3 @@ module.exports = {
     return updatedReason
   }
 };
-
-// id: reasongig id
-
-// {
-//   premise: {
-//     statement: "lol"
-//   },
-//   order: 5
-// }
