@@ -216,6 +216,8 @@ module.exports = {
       count = angoliaSearch.length
     }
 
+    console.log({ count })
+
     const algoliaArgument = {
       ...argument,
       UsedInLength: argument.reasonings.length,
