@@ -111,9 +111,18 @@ module.exports = {
       const t = await strapi.query('reasonings').update({ _id: savedReason.id }, {order: arr})
       console.log(t)
     }
+
+    let count;
+    for (const reaso of savedArgument.reasonings){
+      const angoliaSearch = await strapi.query('Arguments').find({ reasonings: reaso.id })
+      count = angoliaSearch.length
+    }
+
+    console.log('length', savedArgument.reasonings.length)
     const algoliaArgument = {
       ...savedArgument,
-      UsedInLength: savedArgument.UsedIn.length
+      UsedInLength: savedArgument.reasonings.length,
+      count: count
     }
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
     // const lol = await strapi.query('Arguments').find({id: savedArgument.id})
@@ -201,6 +210,19 @@ module.exports = {
     
     const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order, premises: reason.premises})
 
+    let count;
+    for (const reaso of argument.reasonings){
+      const angoliaSearch = await strapi.query('Arguments').find({ reasonings: reaso.id })
+      count = angoliaSearch.length
+    }
+
+    const algoliaArgument = {
+      ...argument,
+      UsedInLength: argument.reasonings.length,
+      count: count
+    }
+    strapi.services.algolia.saveObject(algoliaArgument, 'argument');
+
     return updatedReason
   },
 
@@ -232,6 +254,19 @@ module.exports = {
     savedReason.order.push({id: argument.id , order: 1})
     savedReason.premises.push(argument.id)
     const updatedReason = await strapi.query('Reasonings').update({ id: savedReason.id }, { order: savedReason.order, premises: savedReason.premises })
+
+    let count;
+    for (const reaso of argument.reasonings){
+      const angoliaSearch = await strapi.query('Arguments').find({ reasonings: reaso.id })
+      count = angoliaSearch.length
+    }
+
+    const algoliaArgument = {
+      ...argument,
+      UsedInLength: argument.reasonings.length,
+      count: count
+    }
+    strapi.services.algolia.saveObject(algoliaArgument, 'argument');
 
     return updatedReason
   }
