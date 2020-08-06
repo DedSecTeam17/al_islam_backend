@@ -234,13 +234,15 @@ module.exports = {
 
     console.log({ count })
 
-    const arg = await strapi.query('reasonings').findOne({ id: argument.id })
+    const arg = await strapi.query('Arguments').findOne({ id: argument.id })
+    console.log(arg)
     const algoliaArgument = {
       ...arg,
       ReasonLength: arg.reasonings.length,
       UsedInLength: arg.UsedIn.length,
       count: count
     }
+    console.log(algoliaArgument)
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
 
     return updatedReason
@@ -299,6 +301,8 @@ module.exports = {
       UsedInLength: arg.UsedIn.length,
       count: count
     }
+    console.log({algoliaArgument, algoliaArgument2})
+
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
     strapi.services.algolia.saveObject(algoliaArgument2, 'argument');
 
