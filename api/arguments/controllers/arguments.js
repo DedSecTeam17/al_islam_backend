@@ -38,6 +38,11 @@ module.exports = {
     return foundArgument
   },
 
+  /*
+  ********************************************************************************************************************************************
+  ** create new arguemnt
+  **
+  */
   create: async ctx => {
     const { reasonings, statement, ...argument } = ctx.request.body
     console.log({ reasonings, argument })
@@ -121,15 +126,23 @@ module.exports = {
     console.log('length', savedArgument.reasonings.length)
     const algoliaArgument = {
       ...savedArgument,
-      UsedInLength: savedArgument.reasonings.length,
+      ReasonLength: savedArgument.reasonings.length,
+      UsedInLength: savedArgument.UsedIn.length,
       count: count
     }
+    console.log('algolia search', algoliaArgument)
+
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
     // const lol = await strapi.query('Arguments').find({id: savedArgument.id})
 
     return savedArgument
   },
   
+  /*
+  ********************************************************************************************************************************************
+  ** update arguemnt
+  **
+  */
   update: async ctx => {
     const id = ctx.params.id
     const updateData = ctx.request.body
@@ -157,6 +170,11 @@ module.exports = {
     strapi.services.algolia.deleteObject(id, 'argument')
   },
 
+  /*
+  ********************************************************************************************************************************************
+  ** return the arguments that does not have premises or reasons
+  **
+  */
   root: async ctx => {
     // const foundArgument =  await strapi.query('arguments').find({ UsedIn: { $lte: []} } )
     // const foundArgument = await strapi.query('arguments').find({ UsedIn: {$exists: true, $not: {$size: 0}}}, [
@@ -181,7 +199,11 @@ module.exports = {
 
     return arr
   },
-
+  /*
+  ********************************************************************************************************************************************
+  ** create new premise to exited reasonging
+  **
+  */
   addPremise: async ctx => {
     const reasonId = ctx.params.id
     const { premise, order } = ctx.request.body
@@ -196,12 +218,6 @@ module.exports = {
       }
       argument = await strapi.query('Arguments').create(obj)
     }
-
-    // const obj = {
-    //   ...premise,
-    //   UsedIn: [reasonId]
-    // }
-    // const argument = await strapi.query('Arguments').create(obj)
 
     const reason = await strapi.query('reasonings').findOne({ id: reasonId })
 
@@ -218,9 +234,11 @@ module.exports = {
 
     console.log({ count })
 
+    const arg = await strapi.query('reasonings').findOne({ id: argument.id })
     const algoliaArgument = {
-      ...argument,
-      UsedInLength: argument.reasonings.length,
+      ...arg,
+      ReasonLength: arg.reasonings.length,
+      UsedInLength: arg.UsedIn.length,
       count: count
     }
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
@@ -228,6 +246,11 @@ module.exports = {
     return updatedReason
   },
 
+  /*
+  ********************************************************************************************************************************************
+  ** create new premise to new reasonging and asign it to argument
+  **
+  */
   addPremiseToArgument: async ctx => {
     const argumentId = ctx.params.id
     const { premise } = ctx.request.body
@@ -262,13 +285,22 @@ module.exports = {
       const angoliaSearch = await strapi.query('Arguments').find({ reasonings: reaso.id })
       count = angoliaSearch.length
     }
-
+    const newArg = await strapi.query('Arguments').findOne({id: argument.id})
     const algoliaArgument = {
-      ...argument,
-      UsedInLength: argument.reasonings.length,
+      ...newArg,
+      ReasonLength: newArg.reasonings.length,
+      UsedInLength: newArg.UsedIn.length,
+      count: count
+    }
+
+    const algoliaArgument2 = {
+      ...arg,
+      ReasonLength: arg.reasonings.length,
+      UsedInLength: arg.UsedIn.length,
       count: count
     }
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
+    strapi.services.algolia.saveObject(algoliaArgument2, 'argument');
 
     return updatedReason
   }
