@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "citations",
+  "info": {
+    "name": "Citation"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "reference": {
+      "model": "reference",
+      "via": "citations"
+    },
+    "argument": {
+      "model": "arguments"
+    },
+    "citation": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}

@@ -9,6 +9,7 @@ input ArgumentInput {
   public: Boolean
   UsedIn: [ID]
   reasonings: [ID]
+  reference: ID
   created_by: ID
   updated_by: ID
 }
@@ -21,6 +22,7 @@ type Arguments {
   statement: String!
   role: UsersPermissionsUser
   public: Boolean
+  reference: Reference
   created_by: AdminUser
   updated_by: AdminUser
   UsedIn(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
@@ -63,6 +65,11 @@ type ArgumentsConnectionPublic {
   connection: ArgumentsConnection
 }
 
+type ArgumentsConnectionReference {
+  key: ID
+  connection: ArgumentsConnection
+}
+
 type ArgumentsConnectionRole {
   key: ID
   connection: ArgumentsConnection
@@ -91,8 +98,105 @@ type ArgumentsGroupBy {
   statement: [ArgumentsConnectionStatement]
   role: [ArgumentsConnectionRole]
   public: [ArgumentsConnectionPublic]
+  reference: [ArgumentsConnectionReference]
   created_by: [ArgumentsConnectionCreated_by]
   updated_by: [ArgumentsConnectionUpdated_by]
+}
+
+type Citation {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  reference: Reference
+  argument: Arguments
+  citation: String
+  url: String
+  created_by: AdminUser
+  updated_by: AdminUser
+}
+
+type CitationAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type CitationConnection {
+  values: [Citation]
+  groupBy: CitationGroupBy
+  aggregate: CitationAggregator
+}
+
+type CitationConnection_id {
+  key: ID
+  connection: CitationConnection
+}
+
+type CitationConnectionArgument {
+  key: ID
+  connection: CitationConnection
+}
+
+type CitationConnectionCitation {
+  key: String
+  connection: CitationConnection
+}
+
+type CitationConnectionCreated_by {
+  key: ID
+  connection: CitationConnection
+}
+
+type CitationConnectionCreatedAt {
+  key: DateTime
+  connection: CitationConnection
+}
+
+type CitationConnectionId {
+  key: ID
+  connection: CitationConnection
+}
+
+type CitationConnectionReference {
+  key: ID
+  connection: CitationConnection
+}
+
+type CitationConnectionUpdated_by {
+  key: ID
+  connection: CitationConnection
+}
+
+type CitationConnectionUpdatedAt {
+  key: DateTime
+  connection: CitationConnection
+}
+
+type CitationConnectionUrl {
+  key: String
+  connection: CitationConnection
+}
+
+type CitationGroupBy {
+  id: [CitationConnectionId]
+  _id: [CitationConnection_id]
+  createdAt: [CitationConnectionCreatedAt]
+  updatedAt: [CitationConnectionUpdatedAt]
+  reference: [CitationConnectionReference]
+  argument: [CitationConnectionArgument]
+  citation: [CitationConnectionCitation]
+  url: [CitationConnectionUrl]
+  created_by: [CitationConnectionCreated_by]
+  updated_by: [CitationConnectionUpdated_by]
+}
+
+input CitationInput {
+  reference: ID
+  argument: ID
+  citation: String
+  url: String
+  created_by: ID
+  updated_by: ID
 }
 
 input createArgumentInput {
@@ -103,12 +207,28 @@ type createArgumentPayload {
   argument: Arguments
 }
 
+input createCitationInput {
+  data: CitationInput
+}
+
+type createCitationPayload {
+  citation: Citation
+}
+
 input createReasoningInput {
   data: ReasoningInput
 }
 
 type createReasoningPayload {
   reasoning: Reasonings
+}
+
+input createReferenceInput {
+  data: ReferenceInput
+}
+
+type createReferencePayload {
+  reference: Reference
 }
 
 input createRoleInput {
@@ -149,12 +269,28 @@ type deleteArgumentPayload {
   argument: Arguments
 }
 
+input deleteCitationInput {
+  where: InputID
+}
+
+type deleteCitationPayload {
+  citation: Citation
+}
+
 input deleteReasoningInput {
   where: InputID
 }
 
 type deleteReasoningPayload {
   reasoning: Reasonings
+}
+
+input deleteReferenceInput {
+  where: InputID
+}
+
+type deleteReferencePayload {
+  reference: Reference
 }
 
 input deleteRoleInput {
@@ -179,6 +315,16 @@ input editArgumentInput {
   public: Boolean
   UsedIn: [ID]
   reasonings: [ID]
+  reference: ID
+  created_by: ID
+  updated_by: ID
+}
+
+input editCitationInput {
+  reference: ID
+  argument: ID
+  citation: String
+  url: String
   created_by: ID
   updated_by: ID
 }
@@ -210,6 +356,16 @@ input editReasoningInput {
   updated_by: ID
 }
 
+input editReferenceInput {
+  Type: ENUM_REFERENCE_TYPE
+  reference: String
+  url: String
+  arguments: [ID]
+  citations: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
 input editRoleInput {
   name: String
   description: String
@@ -231,6 +387,13 @@ input editUserInput {
   role: ID
   created_by: ID
   updated_by: ID
+}
+
+enum ENUM_REFERENCE_TYPE {
+  Book
+  Journal
+  Website
+  Definition
 }
 
 input FileInput {
@@ -265,15 +428,21 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Arguments | ArgumentsConnection | ArgumentsAggregator | ArgumentsGroupBy | ArgumentsConnectionId | ArgumentsConnection_id | ArgumentsConnectionCreatedAt | ArgumentsConnectionUpdatedAt | ArgumentsConnectionStatement | ArgumentsConnectionRole | ArgumentsConnectionPublic | ArgumentsConnectionCreated_by | ArgumentsConnectionUpdated_by | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Reasonings | ReasoningsConnection | ReasoningsAggregator | ReasoningsGroupBy | ReasoningsConnectionId | ReasoningsConnection_id | ReasoningsConnectionCreatedAt | ReasoningsConnectionUpdatedAt | ReasoningsConnectionOrder | ReasoningsConnectionCreated_by | ReasoningsConnectionUpdated_by | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionCreated_by | UploadFileConnectionUpdated_by | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionUpdated_by | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionUpdated_by | createUserPayload | updateUserPayload | deleteUserPayload
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Arguments | ArgumentsConnection | ArgumentsAggregator | ArgumentsGroupBy | ArgumentsConnectionId | ArgumentsConnection_id | ArgumentsConnectionCreatedAt | ArgumentsConnectionUpdatedAt | ArgumentsConnectionStatement | ArgumentsConnectionRole | ArgumentsConnectionPublic | ArgumentsConnectionReference | ArgumentsConnectionCreated_by | ArgumentsConnectionUpdated_by | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Citation | CitationConnection | CitationAggregator | CitationGroupBy | CitationConnectionId | CitationConnection_id | CitationConnectionCreatedAt | CitationConnectionUpdatedAt | CitationConnectionReference | CitationConnectionArgument | CitationConnectionCitation | CitationConnectionUrl | CitationConnectionCreated_by | CitationConnectionUpdated_by | createCitationPayload | updateCitationPayload | deleteCitationPayload | Reasonings | ReasoningsConnection | ReasoningsAggregator | ReasoningsGroupBy | ReasoningsConnectionId | ReasoningsConnection_id | ReasoningsConnectionCreatedAt | ReasoningsConnectionUpdatedAt | ReasoningsConnectionOrder | ReasoningsConnectionCreated_by | ReasoningsConnectionUpdated_by | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | Reference | ReferenceConnection | ReferenceAggregator | ReferenceGroupBy | ReferenceConnectionId | ReferenceConnection_id | ReferenceConnectionCreatedAt | ReferenceConnectionUpdatedAt | ReferenceConnectionType | ReferenceConnectionReference | ReferenceConnectionUrl | ReferenceConnectionCreated_by | ReferenceConnectionUpdated_by | createReferencePayload | updateReferencePayload | deleteReferencePayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionCreated_by | UploadFileConnectionUpdated_by | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionUpdated_by | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionUpdated_by | createUserPayload | updateUserPayload | deleteUserPayload
 
 type Mutation {
   createArgument(input: createArgumentInput): createArgumentPayload
   updateArgument(input: updateArgumentInput): updateArgumentPayload
   deleteArgument(input: deleteArgumentInput): deleteArgumentPayload
+  createCitation(input: createCitationInput): createCitationPayload
+  updateCitation(input: updateCitationInput): updateCitationPayload
+  deleteCitation(input: deleteCitationInput): deleteCitationPayload
   createReasoning(input: createReasoningInput): createReasoningPayload
   updateReasoning(input: updateReasoningInput): updateReasoningPayload
   deleteReasoning(input: deleteReasoningInput): deleteReasoningPayload
+  createReference(input: createReferenceInput): createReferencePayload
+  updateReference(input: updateReferenceInput): updateReferencePayload
+  deleteReference(input: deleteReferenceInput): deleteReferencePayload
 
   """Create a new role"""
   createRole(input: createRoleInput): createRolePayload
@@ -306,9 +475,15 @@ type Query {
   argument(id: ID!): Arguments
   arguments(sort: String, limit: Int, start: Int, where: JSON): [Arguments]
   argumentsConnection(sort: String, limit: Int, start: Int, where: JSON): ArgumentsConnection
+  citation(id: ID!): Citation
+  citations(sort: String, limit: Int, start: Int, where: JSON): [Citation]
+  citationsConnection(sort: String, limit: Int, start: Int, where: JSON): CitationConnection
   reasoning(id: ID!): Reasonings
   reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
   reasoningsConnection(sort: String, limit: Int, start: Int, where: JSON): ReasoningsConnection
+  reference(id: ID!): Reference
+  references(sort: String, limit: Int, start: Int, where: JSON): [Reference]
+  referencesConnection(sort: String, limit: Int, start: Int, where: JSON): ReferenceConnection
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
   role(id: ID!): UsersPermissionsRole
@@ -403,6 +578,98 @@ type ReasoningsGroupBy {
   updated_by: [ReasoningsConnectionUpdated_by]
 }
 
+type Reference {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  Type: ENUM_REFERENCE_TYPE
+  reference: String
+  url: String
+  created_by: AdminUser
+  updated_by: AdminUser
+  arguments(sort: String, limit: Int, start: Int, where: JSON): [Arguments]
+  citations(sort: String, limit: Int, start: Int, where: JSON): [Citation]
+}
+
+type ReferenceAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type ReferenceConnection {
+  values: [Reference]
+  groupBy: ReferenceGroupBy
+  aggregate: ReferenceAggregator
+}
+
+type ReferenceConnection_id {
+  key: ID
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionCreated_by {
+  key: ID
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionCreatedAt {
+  key: DateTime
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionId {
+  key: ID
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionReference {
+  key: String
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionType {
+  key: String
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionUpdated_by {
+  key: ID
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionUpdatedAt {
+  key: DateTime
+  connection: ReferenceConnection
+}
+
+type ReferenceConnectionUrl {
+  key: String
+  connection: ReferenceConnection
+}
+
+type ReferenceGroupBy {
+  id: [ReferenceConnectionId]
+  _id: [ReferenceConnection_id]
+  createdAt: [ReferenceConnectionCreatedAt]
+  updatedAt: [ReferenceConnectionUpdatedAt]
+  Type: [ReferenceConnectionType]
+  reference: [ReferenceConnectionReference]
+  url: [ReferenceConnectionUrl]
+  created_by: [ReferenceConnectionCreated_by]
+  updated_by: [ReferenceConnectionUpdated_by]
+}
+
+input ReferenceInput {
+  Type: ENUM_REFERENCE_TYPE
+  reference: String
+  url: String
+  arguments: [ID]
+  citations: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
 input RoleInput {
   name: String!
   description: String
@@ -425,6 +692,15 @@ type updateArgumentPayload {
   argument: Arguments
 }
 
+input updateCitationInput {
+  where: InputID
+  data: editCitationInput
+}
+
+type updateCitationPayload {
+  citation: Citation
+}
+
 input updateReasoningInput {
   where: InputID
   data: editReasoningInput
@@ -432,6 +708,15 @@ input updateReasoningInput {
 
 type updateReasoningPayload {
   reasoning: Reasonings
+}
+
+input updateReferenceInput {
+  where: InputID
+  data: editReferenceInput
+}
+
+type updateReferencePayload {
+  reference: Reference
 }
 
 input updateRoleInput {

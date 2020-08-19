@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "references",
+  "info": {
+    "name": "Reference"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "Book",
+        "Journal",
+        "Website",
+        "Definition"
+      ]
+    },
+    "reference": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "arguments": {
+      "via": "reference",
+      "collection": "arguments"
+    },
+    "citations": {
+      "via": "reference",
+      "collection": "citation"
+    }
+  }
+}

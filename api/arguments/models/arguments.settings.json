@@ -28,6 +28,10 @@
     },
     "reasonings": {
       "collection": "reasonings"
+    },
+    "reference": {
+      "model": "reference",
+      "via": "arguments"
     }
   }
 }
