@@ -13,6 +13,7 @@ module.exports = {
   //        ]);
   //      },
   find: async ctx => {
+    console.log('commit')
     const foundArgument =  await strapi.query('arguments').find({}, [
       {
         path: 'reasonings',
