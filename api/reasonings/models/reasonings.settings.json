@@ -16,6 +16,10 @@
     },
     "order": {
       "type": "json"
+    },
+    "citations": {
+      "via": "reasoning",
+      "collection": "citation"
     }
   }
 }

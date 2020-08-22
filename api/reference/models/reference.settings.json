@@ -24,10 +24,6 @@
     "url": {
       "type": "string"
     },
-    "arguments": {
-      "via": "reference",
-      "collection": "arguments"
-    },
     "citations": {
       "via": "reference",
       "collection": "citation"

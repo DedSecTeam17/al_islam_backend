@@ -29,9 +29,9 @@
     "reasonings": {
       "collection": "reasonings"
     },
-    "reference": {
-      "model": "reference",
-      "via": "arguments"
+    "citations": {
+      "via": "argument",
+      "collection": "citation"
     }
   }
 }
