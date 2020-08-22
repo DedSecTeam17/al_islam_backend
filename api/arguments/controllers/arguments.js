@@ -4,6 +4,7 @@
  * Read the documentation (https://strapi.io/documentation/v3.x/concepts/controllers.html#core-controllers)
  * to customize this controller
  */
+//git commit
 
 module.exports = {
   //    find: ctx => {
@@ -12,6 +13,7 @@ module.exports = {
   //        ]);
   //      },
   find: async ctx => {
+    console.log('commit')
     const foundArgument =  await strapi.query('arguments').find({}, [
       {
         path: 'reasonings',
@@ -20,7 +22,7 @@ module.exports = {
         }
       }
     ])
-
+    console.log(foundArgument)
     return foundArgument
   },
 
@@ -234,13 +236,15 @@ module.exports = {
 
     console.log({ count })
 
-    const arg = await strapi.query('reasonings').findOne({ id: argument.id })
+    const arg = await strapi.query('Arguments').findOne({ id: argument.id })
+    console.log(arg)
     const algoliaArgument = {
       ...arg,
       ReasonLength: arg.reasonings.length,
       UsedInLength: arg.UsedIn.length,
       count: count
     }
+    console.log(algoliaArgument)
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
 
     return updatedReason
@@ -299,6 +303,8 @@ module.exports = {
       UsedInLength: arg.UsedIn.length,
       count: count
     }
+    console.log({algoliaArgument, algoliaArgument2})
+
     strapi.services.algolia.saveObject(algoliaArgument, 'argument');
     strapi.services.algolia.saveObject(algoliaArgument2, 'argument');
 

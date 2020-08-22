@@ -14,13 +14,22 @@
       "via": "citations"
     },
     "argument": {
-      "model": "arguments"
+      "model": "arguments",
+      "via": "citations"
     },
     "citation": {
       "type": "string"
     },
     "url": {
       "type": "string"
+    },
+    "reasoning": {
+      "model": "reasonings",
+      "via": "citations"
+    },
+    "definition": {
+      "model": "definition",
+      "via": "citations"
     }
   }
 }
