@@ -28,8 +28,8 @@
       "via": "citations"
     },
     "definition": {
-      "model": "definition",
-      "via": "citations"
+      "via": "citations",
+      "model": "definition"
     }
   }
 }

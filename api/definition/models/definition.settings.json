@@ -12,23 +12,17 @@
     "word": {
       "type": "string"
     },
-    "description": {
-      "type": "text"
-    },
-    "image": {
-      "model": "file",
-      "via": "related",
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos"
-      ],
-      "plugin": "upload",
-      "required": false
-    },
     "citations": {
-      "via": "definition",
-      "collection": "citation"
+      "collection": "citation",
+      "via": "definition"
+    },
+    "arguments": {
+      "collection": "arguments",
+      "via": "definitions",
+      "dominant": true
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }

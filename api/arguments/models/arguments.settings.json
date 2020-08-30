@@ -32,6 +32,10 @@
     "citations": {
       "via": "argument",
       "collection": "citation"
+    },
+    "definitions": {
+      "via": "arguments",
+      "collection": "definition"
     }
   }
 }
