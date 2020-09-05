@@ -11,6 +11,7 @@ input ArgumentInput {
   reasonings: [ID]
   citations: [ID]
   definitions: [ID]
+  objections: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -29,6 +30,7 @@ type Arguments {
   reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
   citations(sort: String, limit: Int, start: Int, where: JSON): [Citation]
   definitions(sort: String, limit: Int, start: Int, where: JSON): [Definition]
+  objections(sort: String, limit: Int, start: Int, where: JSON): [Objection]
 }
 
 type ArgumentsAggregator {
@@ -112,6 +114,7 @@ type Citation {
   definition: Definition
   created_by: AdminUser
   updated_by: AdminUser
+  objections(sort: String, limit: Int, start: Int, where: JSON): [Objection]
 }
 
 type CitationAggregator {
@@ -207,6 +210,7 @@ input CitationInput {
   url: String
   reasoning: ID
   definition: ID
+  objections: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -235,12 +239,28 @@ type createDefinitionPayload {
   definition: Definition
 }
 
+input createObjectionInput {
+  data: ObjectionInput
+}
+
+type createObjectionPayload {
+  objection: Objection
+}
+
 input createReasoningInput {
   data: ReasoningInput
 }
 
 type createReasoningPayload {
   reasoning: Reasonings
+}
+
+input createRebutalInput {
+  data: RebutalInput
+}
+
+type createRebutalPayload {
+  rebutal: Rebutals
 }
 
 input createReferenceInput {
@@ -292,6 +312,7 @@ type Definition {
   updated_by: AdminUser
   citations(sort: String, limit: Int, start: Int, where: JSON): [Citation]
   arguments(sort: String, limit: Int, start: Int, where: JSON): [Arguments]
+  objections(sort: String, limit: Int, start: Int, where: JSON): [Objection]
 }
 
 type DefinitionAggregator {
@@ -361,6 +382,7 @@ input DefinitionInput {
   citations: [ID]
   arguments: [ID]
   description: String
+  objections: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -389,12 +411,28 @@ type deleteDefinitionPayload {
   definition: Definition
 }
 
+input deleteObjectionInput {
+  where: InputID
+}
+
+type deleteObjectionPayload {
+  objection: Objection
+}
+
 input deleteReasoningInput {
   where: InputID
 }
 
 type deleteReasoningPayload {
   reasoning: Reasonings
+}
+
+input deleteRebutalInput {
+  where: InputID
+}
+
+type deleteRebutalPayload {
+  rebutal: Rebutals
 }
 
 input deleteReferenceInput {
@@ -429,6 +467,7 @@ input editArgumentInput {
   reasonings: [ID]
   citations: [ID]
   definitions: [ID]
+  objections: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -440,6 +479,7 @@ input editCitationInput {
   url: String
   reasoning: ID
   definition: ID
+  objections: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -449,6 +489,7 @@ input editDefinitionInput {
   citations: [ID]
   arguments: [ID]
   description: String
+  objections: [ID]
   created_by: ID
   updated_by: ID
 }
@@ -473,10 +514,27 @@ input editFileInput {
   updated_by: ID
 }
 
+input editObjectionInput {
+  objection: String
+  argument: ID
+  citation: ID
+  definition: ID
+  rebutals: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
 input editReasoningInput {
   premises: [ID]
   order: JSON
   citations: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
+input editRebutalInput {
+  description: String
+  objection: ID
   created_by: ID
   updated_by: ID
 }
@@ -552,7 +610,7 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Arguments | ArgumentsConnection | ArgumentsAggregator | ArgumentsGroupBy | ArgumentsConnectionId | ArgumentsConnection_id | ArgumentsConnectionCreatedAt | ArgumentsConnectionUpdatedAt | ArgumentsConnectionStatement | ArgumentsConnectionRole | ArgumentsConnectionPublic | ArgumentsConnectionCreated_by | ArgumentsConnectionUpdated_by | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Citation | CitationConnection | CitationAggregator | CitationGroupBy | CitationConnectionId | CitationConnection_id | CitationConnectionCreatedAt | CitationConnectionUpdatedAt | CitationConnectionReference | CitationConnectionArgument | CitationConnectionCitation | CitationConnectionUrl | CitationConnectionReasoning | CitationConnectionDefinition | CitationConnectionCreated_by | CitationConnectionUpdated_by | createCitationPayload | updateCitationPayload | deleteCitationPayload | Definition | DefinitionConnection | DefinitionAggregator | DefinitionGroupBy | DefinitionConnectionId | DefinitionConnection_id | DefinitionConnectionCreatedAt | DefinitionConnectionUpdatedAt | DefinitionConnectionWord | DefinitionConnectionDescription | DefinitionConnectionCreated_by | DefinitionConnectionUpdated_by | createDefinitionPayload | updateDefinitionPayload | deleteDefinitionPayload | Reasonings | ReasoningsConnection | ReasoningsAggregator | ReasoningsGroupBy | ReasoningsConnectionId | ReasoningsConnection_id | ReasoningsConnectionCreatedAt | ReasoningsConnectionUpdatedAt | ReasoningsConnectionOrder | ReasoningsConnectionCreated_by | ReasoningsConnectionUpdated_by | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | Reference | ReferenceConnection | ReferenceAggregator | ReferenceGroupBy | ReferenceConnectionId | ReferenceConnection_id | ReferenceConnectionCreatedAt | ReferenceConnectionUpdatedAt | ReferenceConnectionType | ReferenceConnectionReference | ReferenceConnectionUrl | ReferenceConnectionCreated_by | ReferenceConnectionUpdated_by | createReferencePayload | updateReferencePayload | deleteReferencePayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionCreated_by | UploadFileConnectionUpdated_by | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionUpdated_by | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionUpdated_by | createUserPayload | updateUserPayload | deleteUserPayload
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Arguments | ArgumentsConnection | ArgumentsAggregator | ArgumentsGroupBy | ArgumentsConnectionId | ArgumentsConnection_id | ArgumentsConnectionCreatedAt | ArgumentsConnectionUpdatedAt | ArgumentsConnectionStatement | ArgumentsConnectionRole | ArgumentsConnectionPublic | ArgumentsConnectionCreated_by | ArgumentsConnectionUpdated_by | createArgumentPayload | updateArgumentPayload | deleteArgumentPayload | Citation | CitationConnection | CitationAggregator | CitationGroupBy | CitationConnectionId | CitationConnection_id | CitationConnectionCreatedAt | CitationConnectionUpdatedAt | CitationConnectionReference | CitationConnectionArgument | CitationConnectionCitation | CitationConnectionUrl | CitationConnectionReasoning | CitationConnectionDefinition | CitationConnectionCreated_by | CitationConnectionUpdated_by | createCitationPayload | updateCitationPayload | deleteCitationPayload | Definition | DefinitionConnection | DefinitionAggregator | DefinitionGroupBy | DefinitionConnectionId | DefinitionConnection_id | DefinitionConnectionCreatedAt | DefinitionConnectionUpdatedAt | DefinitionConnectionWord | DefinitionConnectionDescription | DefinitionConnectionCreated_by | DefinitionConnectionUpdated_by | createDefinitionPayload | updateDefinitionPayload | deleteDefinitionPayload | Objection | ObjectionConnection | ObjectionAggregator | ObjectionGroupBy | ObjectionConnectionId | ObjectionConnection_id | ObjectionConnectionCreatedAt | ObjectionConnectionUpdatedAt | ObjectionConnectionObjection | ObjectionConnectionArgument | ObjectionConnectionCitation | ObjectionConnectionDefinition | ObjectionConnectionCreated_by | ObjectionConnectionUpdated_by | createObjectionPayload | updateObjectionPayload | deleteObjectionPayload | Reasonings | ReasoningsConnection | ReasoningsAggregator | ReasoningsGroupBy | ReasoningsConnectionId | ReasoningsConnection_id | ReasoningsConnectionCreatedAt | ReasoningsConnectionUpdatedAt | ReasoningsConnectionOrder | ReasoningsConnectionCreated_by | ReasoningsConnectionUpdated_by | createReasoningPayload | updateReasoningPayload | deleteReasoningPayload | Rebutals | RebutalsConnection | RebutalsAggregator | RebutalsGroupBy | RebutalsConnectionId | RebutalsConnection_id | RebutalsConnectionCreatedAt | RebutalsConnectionUpdatedAt | RebutalsConnectionDescription | RebutalsConnectionObjection | RebutalsConnectionCreated_by | RebutalsConnectionUpdated_by | createRebutalPayload | updateRebutalPayload | deleteRebutalPayload | Reference | ReferenceConnection | ReferenceAggregator | ReferenceGroupBy | ReferenceConnectionId | ReferenceConnection_id | ReferenceConnectionCreatedAt | ReferenceConnectionUpdatedAt | ReferenceConnectionType | ReferenceConnectionReference | ReferenceConnectionUrl | ReferenceConnectionCreated_by | ReferenceConnectionUpdated_by | createReferencePayload | updateReferencePayload | deleteReferencePayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionCreated_by | UploadFileConnectionUpdated_by | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionUpdated_by | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionUpdated_by | createUserPayload | updateUserPayload | deleteUserPayload
 
 type Mutation {
   createArgument(input: createArgumentInput): createArgumentPayload
@@ -564,9 +622,15 @@ type Mutation {
   createDefinition(input: createDefinitionInput): createDefinitionPayload
   updateDefinition(input: updateDefinitionInput): updateDefinitionPayload
   deleteDefinition(input: deleteDefinitionInput): deleteDefinitionPayload
+  createObjection(input: createObjectionInput): createObjectionPayload
+  updateObjection(input: updateObjectionInput): updateObjectionPayload
+  deleteObjection(input: deleteObjectionInput): deleteObjectionPayload
   createReasoning(input: createReasoningInput): createReasoningPayload
   updateReasoning(input: updateReasoningInput): updateReasoningPayload
   deleteReasoning(input: deleteReasoningInput): deleteReasoningPayload
+  createRebutal(input: createRebutalInput): createRebutalPayload
+  updateRebutal(input: updateRebutalInput): updateRebutalPayload
+  deleteRebutal(input: deleteRebutalInput): deleteRebutalPayload
   createReference(input: createReferenceInput): createReferencePayload
   updateReference(input: updateReferenceInput): updateReferencePayload
   deleteReference(input: deleteReferenceInput): deleteReferencePayload
@@ -598,6 +662,104 @@ type Mutation {
   emailConfirmation(confirmation: String!): UsersPermissionsLoginPayload
 }
 
+type Objection {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  objection: String
+  argument: Arguments
+  citation: Citation
+  definition: Definition
+  created_by: AdminUser
+  updated_by: AdminUser
+  rebutals(sort: String, limit: Int, start: Int, where: JSON): [Rebutals]
+}
+
+type ObjectionAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type ObjectionConnection {
+  values: [Objection]
+  groupBy: ObjectionGroupBy
+  aggregate: ObjectionAggregator
+}
+
+type ObjectionConnection_id {
+  key: ID
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionArgument {
+  key: ID
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionCitation {
+  key: ID
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionCreated_by {
+  key: ID
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionCreatedAt {
+  key: DateTime
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionDefinition {
+  key: ID
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionId {
+  key: ID
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionObjection {
+  key: String
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionUpdated_by {
+  key: ID
+  connection: ObjectionConnection
+}
+
+type ObjectionConnectionUpdatedAt {
+  key: DateTime
+  connection: ObjectionConnection
+}
+
+type ObjectionGroupBy {
+  id: [ObjectionConnectionId]
+  _id: [ObjectionConnection_id]
+  createdAt: [ObjectionConnectionCreatedAt]
+  updatedAt: [ObjectionConnectionUpdatedAt]
+  objection: [ObjectionConnectionObjection]
+  argument: [ObjectionConnectionArgument]
+  citation: [ObjectionConnectionCitation]
+  definition: [ObjectionConnectionDefinition]
+  created_by: [ObjectionConnectionCreated_by]
+  updated_by: [ObjectionConnectionUpdated_by]
+}
+
+input ObjectionInput {
+  objection: String
+  argument: ID
+  citation: ID
+  definition: ID
+  rebutals: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
 type Query {
   argument(id: ID!): Arguments
   arguments(sort: String, limit: Int, start: Int, where: JSON): [Arguments]
@@ -608,9 +770,15 @@ type Query {
   definition(id: ID!): Definition
   definitions(sort: String, limit: Int, start: Int, where: JSON): [Definition]
   definitionsConnection(sort: String, limit: Int, start: Int, where: JSON): DefinitionConnection
+  objection(id: ID!): Objection
+  objections(sort: String, limit: Int, start: Int, where: JSON): [Objection]
+  objectionsConnection(sort: String, limit: Int, start: Int, where: JSON): ObjectionConnection
   reasoning(id: ID!): Reasonings
   reasonings(sort: String, limit: Int, start: Int, where: JSON): [Reasonings]
   reasoningsConnection(sort: String, limit: Int, start: Int, where: JSON): ReasoningsConnection
+  rebutal(id: ID!): Rebutals
+  rebutals(sort: String, limit: Int, start: Int, where: JSON): [Rebutals]
+  rebutalsConnection(sort: String, limit: Int, start: Int, where: JSON): RebutalsConnection
   reference(id: ID!): Reference
   references(sort: String, limit: Int, start: Int, where: JSON): [Reference]
   referencesConnection(sort: String, limit: Int, start: Int, where: JSON): ReferenceConnection
@@ -708,6 +876,86 @@ type ReasoningsGroupBy {
   order: [ReasoningsConnectionOrder]
   created_by: [ReasoningsConnectionCreated_by]
   updated_by: [ReasoningsConnectionUpdated_by]
+}
+
+input RebutalInput {
+  description: String
+  objection: ID
+  created_by: ID
+  updated_by: ID
+}
+
+type Rebutals {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  description: String
+  objection: Objection
+  created_by: AdminUser
+  updated_by: AdminUser
+}
+
+type RebutalsAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type RebutalsConnection {
+  values: [Rebutals]
+  groupBy: RebutalsGroupBy
+  aggregate: RebutalsAggregator
+}
+
+type RebutalsConnection_id {
+  key: ID
+  connection: RebutalsConnection
+}
+
+type RebutalsConnectionCreated_by {
+  key: ID
+  connection: RebutalsConnection
+}
+
+type RebutalsConnectionCreatedAt {
+  key: DateTime
+  connection: RebutalsConnection
+}
+
+type RebutalsConnectionDescription {
+  key: String
+  connection: RebutalsConnection
+}
+
+type RebutalsConnectionId {
+  key: ID
+  connection: RebutalsConnection
+}
+
+type RebutalsConnectionObjection {
+  key: ID
+  connection: RebutalsConnection
+}
+
+type RebutalsConnectionUpdated_by {
+  key: ID
+  connection: RebutalsConnection
+}
+
+type RebutalsConnectionUpdatedAt {
+  key: DateTime
+  connection: RebutalsConnection
+}
+
+type RebutalsGroupBy {
+  id: [RebutalsConnectionId]
+  _id: [RebutalsConnection_id]
+  createdAt: [RebutalsConnectionCreatedAt]
+  updatedAt: [RebutalsConnectionUpdatedAt]
+  description: [RebutalsConnectionDescription]
+  objection: [RebutalsConnectionObjection]
+  created_by: [RebutalsConnectionCreated_by]
+  updated_by: [RebutalsConnectionUpdated_by]
 }
 
 type Reference {
@@ -840,6 +1088,15 @@ type updateDefinitionPayload {
   definition: Definition
 }
 
+input updateObjectionInput {
+  where: InputID
+  data: editObjectionInput
+}
+
+type updateObjectionPayload {
+  objection: Objection
+}
+
 input updateReasoningInput {
   where: InputID
   data: editReasoningInput
@@ -847,6 +1104,15 @@ input updateReasoningInput {
 
 type updateReasoningPayload {
   reasoning: Reasonings
+}
+
+input updateRebutalInput {
+  where: InputID
+  data: editRebutalInput
+}
+
+type updateRebutalPayload {
+  rebutal: Rebutals
 }
 
 input updateReferenceInput {

@@ -30,6 +30,10 @@
     "definition": {
       "via": "citations",
       "model": "definition"
+    },
+    "objections": {
+      "via": "citation",
+      "collection": "objection"
     }
   }
 }

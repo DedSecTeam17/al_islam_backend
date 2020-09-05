@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/rebutals",
+      "handler": "rebutals.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/rebutals/count",
+      "handler": "rebutals.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/rebutals/:id",
+      "handler": "rebutals.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/rebutals",
+      "handler": "rebutals.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/rebutals/:id",
+      "handler": "rebutals.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/rebutals/:id",
+      "handler": "rebutals.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

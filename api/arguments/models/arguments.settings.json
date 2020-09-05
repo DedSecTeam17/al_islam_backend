@@ -36,6 +36,10 @@
     "definitions": {
       "via": "arguments",
       "collection": "definition"
+    },
+    "objections": {
+      "via": "argument",
+      "collection": "objection"
     }
   }
 }

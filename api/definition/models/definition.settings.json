@@ -23,6 +23,10 @@
     },
     "description": {
       "type": "richtext"
+    },
+    "objections": {
+      "via": "definition",
+      "collection": "objection"
     }
   }
 }
