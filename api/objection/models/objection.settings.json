@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "objections",
+  "info": {
+    "name": "Objection"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "objection": {
+      "type": "string"
+    },
+    "argument": {
+      "model": "arguments",
+      "via": "objections"
+    },
+    "citation": {
+      "model": "citation",
+      "via": "objections"
+    },
+    "definition": {
+      "model": "definition",
+      "via": "objections"
+    },
+    "rebutals": {
+      "via": "objection",
+      "collection": "rebutals"
+    }
+  }
+}
