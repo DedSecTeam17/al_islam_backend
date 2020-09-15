@@ -21,8 +21,8 @@
       "via": "objections"
     },
     "definition": {
-      "model": "definition",
-      "via": "objections"
+      "via": "objections",
+      "model": "definition"
     },
     "rebutals": {
       "via": "objection",
