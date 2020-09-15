@@ -10,7 +10,8 @@
   },
   "attributes": {
     "word": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "citations": {
       "collection": "citation",
@@ -25,8 +26,8 @@
       "type": "richtext"
     },
     "objections": {
-      "via": "definition",
-      "collection": "objection"
+      "collection": "objection",
+      "via": "definition"
     }
   }
 }
