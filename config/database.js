@@ -5,9 +5,7 @@ module.exports = ({ env }) => (
     default: {
       connector: 'mongoose',
       settings: {
-        "uri": "mongodb://localhost:27017/dbappname",
-        "port": 27017,
-        "database": "server"
+        uri: env('DATABASE_URI')
       },
       options: {
         ssl: false

@@ -12,19 +12,19 @@ module.exports = {
   //            'reasonings','reasonings.premises'
   //        ]);
   //      },
-  find: async ctx => {
-    console.log('commit')
-    const foundArgument =  await strapi.query('arguments').find({}, [
-      {
-        path: 'reasonings',
-        populate: {
-          path: 'premises'
-        }
-      }
-    ])
-    console.log(foundArgument)
-    return foundArgument
-  },
+  // find: async ctx => {
+  //   console.log('commit')
+  //   const foundArgument =  await strapi.query('arguments').find({}, [
+  //     {
+  //       path: 'reasonings',
+  //       populate: {
+  //         path: 'premises'
+  //       }
+  //     }
+  //   ])
+  //   console.log(foundArgument)
+  //   return foundArgument
+  // },
 
   findOne: async ctx => {
     const foundArgument = await strapi.query('Arguments').findOne({id: ctx.params.id}, [
@@ -49,20 +49,20 @@ module.exports = {
     const { reasonings, statement, ...argument } = ctx.request.body
     console.log({ reasonings, argument })
 
-    
+
     if (!statement){
       throw new Error('should contain statement')
     }
-    
-    // if reasoning is null or 
+
+    // if reasoning is null or
     let savedReason;
     if (argument.hasOwnProperty('reasoning')){
       savedReason = await strapi.query('Reasonings').findOne({ id: argument.reasoning})
     } else {
       savedReason = await strapi.query('Reasonings').create({ order: []})
     }
-    
-    
+
+
     let a;
 
     if (reasonings && reasonings.length > 0){
@@ -80,7 +80,7 @@ module.exports = {
 
     const savedArgument = await strapi.query('Arguments').create(a)
     console.log({savedArgument})
-    
+
     const arr = []
     for (const reason of reasonings) {
       const { statement, order, ...rest } = reason
@@ -90,7 +90,7 @@ module.exports = {
         const obj = {
           UsedIn: [savedReason.id]
         }
-        
+
         const savedPremise = await strapi.query('Arguments').update( {id: rest.id} ,obj)
 
         arr.push({
@@ -103,7 +103,7 @@ module.exports = {
           statement: statement,
           UsedIn: [savedReason.id]
         }
-        
+
         const savedPremise = await strapi.query('Arguments').create(obj)
         arr.push({
           id: savedPremise.id,
@@ -111,7 +111,7 @@ module.exports = {
         })
         console.log({savedPremise})
       }
-      
+
     }
 
     if (!argument.hasOwnProperty('reasoning')){
@@ -139,7 +139,7 @@ module.exports = {
 
     return savedArgument
   },
-  
+
   /*
   ********************************************************************************************************************************************
   ** update arguemnt
@@ -152,7 +152,7 @@ module.exports = {
     if(!updateData){
       throw new Error()
     }
-    
+
     const updatedArgument = await strapi.query('Arguments').update({ id }, updateData)
     // const { reasonings, reorder} = ctx.request.body
     // if (reasonings && reorder) {
@@ -225,7 +225,7 @@ module.exports = {
 
     reason.order.push({id: argument.id , order: order})
     reason.premises.push(argument.id)
-    
+
     const updatedReason = await strapi.query('reasonings').update({ id: reasonId }, { order: reason.order, premises: reason.premises})
 
     let count = 0;
@@ -263,7 +263,7 @@ module.exports = {
     const savedReason = await strapi.query('Reasonings').create({ order: []})
 
     // originArgument = await strapi.query('Arguments').findOne({id: argumentId})
-    
+
     let argument;
     if (premise.hasOwnProperty('_id')){
       argument = await strapi.query('Arguments').findOne({id: premise._id})
@@ -275,7 +275,7 @@ module.exports = {
       argument = await strapi.query('Arguments').create(obj)
     }
     console.log({savedReason})
-    
+
     const arg = await strapi.query('Arguments').findOne({id: argumentId})
     arg.reasonings.push(savedReason)
     const originArgument = await strapi.query('Arguments').update({id: argumentId}, {reasonings: arg.reasonings})
